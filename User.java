@@ -130,7 +130,7 @@ public class User {
         int choice = scan.nextInt();
         scan.nextLine();
 
-        while (true) {
+        do {
             if (choice == 1) {
                 createAccount();
                 break;
@@ -142,7 +142,9 @@ public class User {
                 break;
             } else {
                 System.out.println("Input was invalid. Please try again!");
+                choice = scan.nextInt();
+                scan.nextLine();
             }
-        }
+        } while (true);
     }
 }
