@@ -1,0 +1,126 @@
+import java.io.*;
+import java.util.ArrayList;
+
+public class Quiz {
+
+    private static ArrayList<Quiz> quizzes = new ArrayList<>();
+    private String quizName;
+    private boolean randomized;
+    private String question;
+    private ArrayList<String> answerChoices;
+    private String correctAnswer;
+
+    public static void main (String [] args) {
+        quizzes = readFile("src/quizInput.txt");
+        if (quizzes == null || quizzes.size() == 0) {
+            System.out.println("Error reading from file.");
+        } else {
+            if (!writeFile(quizzes, "src/quizOutput.txt")) {
+                System.out.println("Error writing to file.");
+            } else {
+                System.out.println("File was written to!");
+            }
+        }
+    }
+
+    public Quiz() {
+        quizName = new String("");
+        randomized = false;
+        question = new String("");
+        answerChoices = new ArrayList<>();
+        correctAnswer = new String("");
+    }
+
+    public Quiz(String quizName, boolean randomized, String question,
+                ArrayList<String> answerChoices, String correctAnswer) {
+        this.quizName = quizName;
+        this.randomized = randomized;
+        this.question = question;
+        this.answerChoices = answerChoices;
+        this.correctAnswer = correctAnswer;
+    }
+
+    public static ArrayList<Quiz> readFile(String fileName) {
+        try (BufferedReader bfr = new BufferedReader(new FileReader(fileName))) {
+            ArrayList<String> fileContents = new ArrayList<>();
+            String line = new String("");
+            while ((line = bfr.readLine()) != null) {
+                fileContents.add(line);
+            }
+
+            if (fileContents.size() % 8 != 0) {
+                return null;
+            }
+
+            ArrayList<Quiz> quizzesLocal = new ArrayList<>();
+
+            for (int i = 0; i < fileContents.size(); i += 8) {
+                ArrayList<String> answerChoicesLocal = new ArrayList<>();
+                boolean randomizedLocal = false;
+                if (fileContents.get(i + 1).equalsIgnoreCase("y")) {
+                    randomizedLocal = true;
+                }
+                answerChoicesLocal.add(fileContents.get(i + 3));
+                answerChoicesLocal.add(fileContents.get(i + 4));
+                answerChoicesLocal.add(fileContents.get(i + 5));
+                answerChoicesLocal.add(fileContents.get(i + 6));
+                quizzesLocal.add(new Quiz(fileContents.get(i), randomizedLocal, fileContents.get(i + 2),
+                        answerChoicesLocal, fileContents.get(i + 7)));
+
+            }
+            return quizzesLocal;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ArrayList<Quiz> getQuizzes() {
+        return quizzes;
+    }
+
+    public String getQuizName() {
+        return quizName;
+    }
+
+    public boolean isRandomized() {
+        return randomized;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public ArrayList<String> getAnswerChoices() {
+        return answerChoices;
+    }
+
+    public String getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    private static boolean writeFile(ArrayList<Quiz> quizzes, String fileName) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(fileName))) {
+            for (Quiz quiz : quizzes) {
+                pw.println(quiz.toString());
+            }
+            pw.flush();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Quiz Title: " + quizName + "\n" +
+                "Randomized (true or false): " + randomized + "\n" +
+                "Question: " + question + "\n" +
+                "Answer Choice 1: " + answerChoices.get(0) + "\n" +
+                "Answer Choice 2: " + answerChoices.get(1) + "\n" +
+                "Answer Choice 3: " + answerChoices.get(2) + "\n" +
+                "Answer Choice 4: " + answerChoices.get(3) + "\n" +
+                "Correct Answer: " + correctAnswer + "\n";
+    }
+}
