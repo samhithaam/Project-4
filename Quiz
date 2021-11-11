@@ -57,7 +57,7 @@ public class Quiz {
             }
 
             ArrayList<Quiz> quizzesLocal = new ArrayList<>();
-            int indexValue = 0;
+            int indexValue;
             boolean randomizedLocal;
             for (int i = 0; i < indexOfY_N.size(); i++) {
                 while ((i + 1) < indexOfY_N.size()) {
@@ -65,11 +65,8 @@ public class Quiz {
                     ArrayList<String> answerChoicesLocal = new ArrayList<>();
                     ArrayList<String> questionsLocal = new ArrayList<>();
                     ArrayList<String> correctAnswersLocal = new ArrayList<>();
-                    randomizedLocal = false;
 
-                    if (fileContents.get(indexValue).equalsIgnoreCase("y")) {
-                        randomizedLocal = true;
-                    }
+                    randomizedLocal = fileContents.get(indexValue).equalsIgnoreCase("y");
 
                     int questionIndex = indexValue + 1;
                     while (questionIndex < indexOfY_N.get(i + 1)) {
@@ -98,11 +95,8 @@ public class Quiz {
             ArrayList<String> answerChoicesLocal = new ArrayList<>();
             ArrayList<String> questionsLocal = new ArrayList<>();
             ArrayList<String> correctAnswersLocal = new ArrayList<>();
-            randomizedLocal = false;
 
-            if (fileContents.get(indexValue).equalsIgnoreCase("y")) {
-                randomizedLocal = true;
-            }
+            randomizedLocal = fileContents.get(indexValue).equalsIgnoreCase("y");
 
             int questionIndex = indexValue + 1;
             while (questionIndex < fileContents.size()) {
@@ -196,21 +190,21 @@ public class Quiz {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("");
-        sb.append("Quiz Name: " + this.getQuizName());
-        sb.append("\nRandomized (true or false): " + this.isRandomized());
+        StringBuilder sb = new StringBuilder();
+        sb.append("Quiz Name: ").append(this.getQuizName());
+        sb.append("\nRandomized (true or false): ").append(this.isRandomized());
         int questionCounter = 0;
         int answerChoiceCounter = 0;
         for (String question : this.getQuestions()) {
-            sb.append("\nQuestion " + questionCounter + ": " + question);
+            sb.append("\nQuestion ").append(questionCounter).append(": ").append(question);
             questionCounter++;
-            sb.append("\nAnswer Choice 1: " + this.getAnswerChoices().get(answerChoiceCounter));
-            sb.append("\nAnswer Choice 2: " + this.getAnswerChoices().get(answerChoiceCounter + 1));
-            sb.append("\nAnswer Choice 3: " + this.getAnswerChoices().get(answerChoiceCounter + 2));
-            sb.append("\nAnswer Choice 4: " + this.getAnswerChoices().get(answerChoiceCounter + 3));
+            sb.append("\nAnswer Choice 1: ").append(this.getAnswerChoices().get(answerChoiceCounter));
+            sb.append("\nAnswer Choice 2: ").append(this.getAnswerChoices().get(answerChoiceCounter + 1));
+            sb.append("\nAnswer Choice 3: ").append(this.getAnswerChoices().get(answerChoiceCounter + 2));
+            sb.append("\nAnswer Choice 4: ").append(this.getAnswerChoices().get(answerChoiceCounter + 3));
             answerChoiceCounter += 4;
-            sb.append("\nCorrect Answer: " + this.getCorrectAnswers().get(questionCounter) + "\n");
+            sb.append("\nCorrect Answer: ").append(this.getCorrectAnswers().get(questionCounter)).append("\n");
         }
-        return sb + "";
+        return "" + sb;
     }
 }
