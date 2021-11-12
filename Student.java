@@ -4,8 +4,9 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 public class Student {
-    
+
     private static final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm");
+    
     // [question #1, answer to Q1, student answer, question #2, answer to Q2, ...]
     // updated in printQuiz, accessed in viewGradedQuiz()
     private static ArrayList<String> studentSubmissions = new ArrayList<>();
@@ -141,5 +142,9 @@ public class Student {
                 }
             }
         }
+    }
+
+    public static ArrayList<String> getStudentSubmissions() {
+        return studentSubmissions;
     }
 }
