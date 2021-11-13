@@ -1,7 +1,5 @@
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.io.File;
 import java.io.PrintWriter;
 import java.io.IOException;
 
@@ -10,7 +8,11 @@ public class Teacher {
     private static ArrayList<Integer> pointValues = new ArrayList<>();
     private static int totalPoints;
 
+    // Calculates and returns the total points earned by the student on all the quizzes
     public static int getTotalPoints() {
+        for (int i = 0; i < pointValues.size(); i++) {
+            totalPoints = totalPoints + pointValues.get(i);
+        }
         return totalPoints;
     }
     public static ArrayList<String> getTeacherSubmissions() {
@@ -21,32 +23,34 @@ public class Teacher {
         return pointValues;
     }
 
+    // Teachers can create new quizzes with a title, choice to randomize questions, each answer choice, and the correct
+    // answer. The created quizzes are inputted into the teacherSubmissions Arraylist
     public static void createQuiz() {
         boolean anotherQ = true;
         while (anotherQ) {
-            Scanner scan = new Scanner(System.in)
-            System.out.println("Enter quiz title");
+            Scanner scan = new Scanner(System.in);
+            System.out.println("Enter Quiz Title:");
             String quizTitle = scan.nextLine();
-            teacherSubmissions.add(0, quizTitle);
-            System.out.println("Randomize Questions?");
+            teacherSubmissions.add(quizTitle);
+            System.out.println("Randomize Questions? (Y/N)");
             String random = scan.nextLine();
             teacherSubmissions.add(random);
-            System.out.println("Enter Question");
+            System.out.println("Enter Question:");
             String question = scan.nextLine();
             teacherSubmissions.add(question);
-            System.out.println("Enter Answer Choice 1");
+            System.out.println("Enter Answer Choice 1:");
             String answer1 = scan.nextLine();
             teacherSubmissions.add(answer1);
-            System.out.println("Enter Answer Choice 2");
+            System.out.println("Enter Answer Choice 2:");
             String answer2 = scan.nextLine();
             teacherSubmissions.add(answer2);
-            System.out.println("Enter Answer Choice 3");
+            System.out.println("Enter Answer Choice 3:");
             String answer3 = scan.nextLine();
             teacherSubmissions.add(answer3);
-            System.out.println("Enter Answer Choice 4");
+            System.out.println("Enter Answer Choice 4:");
             String answer4 = scan.nextLine();
             teacherSubmissions.add(answer4);
-            System.out.println("Enter Correct Answer Choice");
+            System.out.println("Enter Correct Answer Choice:");
             String answer = scan.nextLine();
             teacherSubmissions.add(answer);
             System.out.println("Do you want to enter another question?");
@@ -57,6 +61,7 @@ public class Teacher {
         }
     }
 
+    // Teachers can edit the quiz information. The new quizzes are updated in the teacherSubmissions Arraylist
     public static void editQuiz() {
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter Quiz Title");
@@ -117,12 +122,12 @@ public class Teacher {
                     teacherSubmissions.set(i + 7, newCorrectAnswer);
                 }
             }
-
         }
     }
 
+    // Teachers can delete a quiz. The quiz is removed from the teacherSubmissions ArrayList
     public static void deleteQuiz() {
-        Scanner scan = new Scanner(System.in)
+        Scanner scan = new Scanner(System.in);
         System.out.println("Enter Quiz Title");
         String title = scan.nextLine();
         for (int i = 0; i < teacherSubmissions.size(); i++) {
@@ -139,6 +144,8 @@ public class Teacher {
         }
     }
 
+    // Teachers can view the student responses to each question and manually assign point values for each question.
+    // The point values earned on each question are inputted into the pointValues Arraylist
     public static void assignPointValues() {
         Scanner scan = new Scanner(System.in);
         for (int i = 0; i < Student.getStudentSubmissions().size(); i+=3) {
@@ -150,21 +157,8 @@ public class Teacher {
             pointValues.add(points);
         }
     }
-    
-    public static void newGradedQuizzes() {
-        for (int i = 0; i < Student.getStudentSubmissions().size(); i+=3) {
-            System.out.println("Question:" + Student.getStudentSubmissions().get(i));
-            System.out.println("Correct Answer:" + Student.getStudentSubmissions().get(i+1));
-            System.out.println("Student Answer:" + Student.getStudentSubmissions().get(i+2));
-            System.out.println("Points Earned:" + pointValues.get(i-2));
-        }
 
-        for (int i = 0; i < pointValues.size(); i++) {
-            totalPoints = totalPoints + pointValues.get(i);
-        }
-    }
-
-    public static void main (String[] args) throws FileNotFoundException {
+    public static void main (String[] args) throws IOException {
         Scanner scan = new Scanner(System.in);
         boolean start = true;
         while (start) {
@@ -193,9 +187,9 @@ public class Teacher {
                 start = false;
             }
         }
-        PrintWriter pw = new PrintWriter("quizList.txt");
+        PrintWriter pw = new PrintWriter("src/quizList.txt");
         for (int i = 0; i < teacherSubmissions.size(); i++) {
-            pw.println(i);
+            pw.println(teacherSubmissions.get(i));
         }
         pw.close();
     }
