@@ -1,6 +1,6 @@
 # Project-4
 
-///////////// to do: who submitted what on vocareum
+/////////////who submitted what on vocareum
 
 There are 4 classes, Student, Teacher, Quiz and User. 
 
@@ -13,5 +13,7 @@ QUIZ CLASS: The Quiz class handles printing the quiz that the teacher created in
 USER CLASS: The User class handles creating, editing, and deleting account usernames/passwords, as well as signing into an account. 
 
 Each of these classes works with each other in order create a working code that can create, edit and delete different accounts for students and teachers. The student and teacher accounts that are created have limitations on what they can do based on if it is a teacher or student account. Teacher accounts can create and assign quizzes, whereas the student account can only access and take the quizzes. 
-/////// to do: where does randomization take place(quiz/teacher)
+
+////////////where does randomization take place(quiz/teacher)
+
 There is also a randomization method in the -------- class, which gives the teacher the option of presenting the quiz questions to the students in a random order.
