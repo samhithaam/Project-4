@@ -1,9 +1,19 @@
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * Teacher.java
+ * @author Ritu Atreyas
+ * @version 11/14/2021
+ */
+
 public class Quiz {
 
-    private static ArrayList<Quiz> quizzes = new ArrayList<>();
+    // quizzes ArrayList stores contents of teacherSubmissions in a more accessible format
+    // each element is a Quiz object and each Quiz object stores the quizName, whether or not that quiz is randomized,
+    // an ArrayList of all the questions, an ArrayList of all the answer choices, and an ArrayList of all the correct answers
+    private static ArrayList<Quiz> quizzes = readFile("src/quizList.txt");
+    // non static field variables, initialized in default constructor
     private String quizName;
     private boolean randomized;
     private ArrayList<String> questions;
@@ -11,15 +21,13 @@ public class Quiz {
     private ArrayList<String> correctAnswers;
 
     public static void main (String [] args) {
-        quizzes = readFile("src/quizInput.txt");
-        if (quizzes == null || quizzes.size() == 0) {
+        // can either load contents of quizzes ArrayList using teacherSubmissions ArrayList
+        // ArrayList<String> teacherSubmissions = Teacher.getTeacherSubmissions();
+        // quizzes = formatTeacherSubmissions(teacherSubmissions);
+
+        // or can load contents of quizzes ArrayList using quizList text file
+        if (quizzes == null || quizzes.size() == 0) { // nothing in the text file
             System.out.println("Error reading from file.");
-        } else {
-            if (!writeFile(quizzes, "src/quizOutput.txt")) {
-                System.out.println("Error writing to file.");
-            } else {
-                System.out.println("File was written to!");
-            }
         }
     }
 
@@ -38,7 +46,6 @@ public class Quiz {
         this.questions = questions;
         this.answerChoices = answerChoices;
         this.correctAnswers = correctAnswers;
-        quizzes.add(new Quiz(quizName, randomized, questions, answerChoices, correctAnswers));
     }
 
     public static ArrayList<Quiz> readFile(String fileName) {
@@ -49,6 +56,10 @@ public class Quiz {
                 fileContents.add(line);
             }
 
+            if (fileContents.size() == 0) {
+                return null;
+            }
+
             ArrayList<Integer> indexOfY_N = new ArrayList<>();
             for (int i = 0; i < fileContents.size(); i++) {
                 if (fileContents.get(i).equalsIgnoreCase("y") || fileContents.get(i).equalsIgnoreCase("n")) {
@@ -57,46 +68,57 @@ public class Quiz {
             }
 
             ArrayList<Quiz> quizzesLocal = new ArrayList<>();
+            ArrayList<String> answerChoicesLocal = new ArrayList<>();
+            ArrayList<String> questionsLocal = new ArrayList<>();
+            ArrayList<String> correctAnswersLocal = new ArrayList<>();
             int indexValue;
             boolean randomizedLocal;
             for (int i = 0; i < indexOfY_N.size(); i++) {
-                while ((i + 1) < indexOfY_N.size()) {
+                if ((i + 1) < indexOfY_N.size()) {
+                    answerChoicesLocal.clear();
+                    questionsLocal.clear();
+                    correctAnswersLocal.clear();
                     indexValue = indexOfY_N.get(i);
-                    ArrayList<String> answerChoicesLocal = new ArrayList<>();
-                    ArrayList<String> questionsLocal = new ArrayList<>();
-                    ArrayList<String> correctAnswersLocal = new ArrayList<>();
 
                     randomizedLocal = fileContents.get(indexValue).equalsIgnoreCase("y");
 
                     int questionIndex = indexValue + 1;
                     while (questionIndex < indexOfY_N.get(i + 1)) {
                         questionsLocal.add(fileContents.get(questionIndex));
-                        questionIndex += 6;
+                        if (questionIndex + 7 == indexOfY_N.get(i + 1)) {
+                            break;
+                        } else {
+                            questionIndex += 6;
+                        }
                     }
 
                     int answerChoicesIndex = indexValue + 2;
                     while ((answerChoicesIndex + 3) < indexOfY_N.get(i + 1)) {
-                        answerChoicesLocal.add(fileContents.get(answerChoicesIndex));
+                           answerChoicesLocal.add(fileContents.get(answerChoicesIndex));
                         answerChoicesLocal.add(fileContents.get(answerChoicesIndex + 1));
                         answerChoicesLocal.add(fileContents.get(answerChoicesIndex + 2));
                         answerChoicesLocal.add(fileContents.get(answerChoicesIndex + 3));
-                        answerChoicesIndex += 3;
+                        if (answerChoicesIndex + 6 == indexOfY_N.get(i + 1)) {
+                            break;
+                        } else {
+                            answerChoicesIndex += 6;
+                        }
                     }
 
                     int correctAnswerIndex = indexValue + 6;
                     while (correctAnswerIndex < indexOfY_N.get(i + 1)) {
                         correctAnswersLocal.add(fileContents.get(correctAnswerIndex));
-                        correctAnswerIndex += 6;
+                        if (correctAnswerIndex + 2 == indexOfY_N.get(i + 1)) {
+                            break;
+                        } else {
+                            correctAnswerIndex += 6;
+                        }
                     }
                     quizzesLocal.add(new Quiz(fileContents.get(indexValue - 1), randomizedLocal, questionsLocal, answerChoicesLocal, correctAnswersLocal));
                 }
             }
 
             indexValue = indexOfY_N.get(indexOfY_N.size() - 1);
-            ArrayList<String> answerChoicesLocal = new ArrayList<>();
-            ArrayList<String> questionsLocal = new ArrayList<>();
-            ArrayList<String> correctAnswersLocal = new ArrayList<>();
-
             randomizedLocal = fileContents.get(indexValue).equalsIgnoreCase("y");
 
             int questionIndex = indexValue + 1;
@@ -111,7 +133,7 @@ public class Quiz {
                 answerChoicesLocal.add(fileContents.get(answerChoicesIndex + 1));
                 answerChoicesLocal.add(fileContents.get(answerChoicesIndex + 2));
                 answerChoicesLocal.add(fileContents.get(answerChoicesIndex + 3));
-                answerChoicesIndex += 3;
+                answerChoicesIndex += 6;
             }
 
             int correctAnswerIndex = indexValue + 6;
@@ -121,8 +143,15 @@ public class Quiz {
             }
 
             quizzesLocal.add(new Quiz(fileContents.get(indexValue - 1), randomizedLocal, questionsLocal, answerChoicesLocal, correctAnswersLocal));
-            return quizzesLocal;
+            try (PrintWriter pw = new PrintWriter(new FileWriter("src/quizOutput.txt"))) {
+                for (Quiz quiz : quizzesLocal) {
+                    pw.println(quiz.toString());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
+            return quizzesLocal;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -177,19 +206,6 @@ public class Quiz {
         this.correctAnswers = correctAnswers;
     }
 
-    private static boolean writeFile(ArrayList<Quiz> quizzes, String fileName) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(fileName))) {
-            for (Quiz quiz : quizzes) {
-                pw.println(quiz.toString());
-            }
-            pw.flush();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -198,14 +214,14 @@ public class Quiz {
         int questionCounter = 0;
         int answerChoiceCounter = 0;
         for (String question : this.getQuestions()) {
-            sb.append("\nQuestion ").append(questionCounter).append(": ").append(question);
-            questionCounter++;
+            sb.append("\nQuestion ").append(questionCounter + 1).append(": ").append(question);
             sb.append("\nAnswer Choice 1: ").append(this.getAnswerChoices().get(answerChoiceCounter));
             sb.append("\nAnswer Choice 2: ").append(this.getAnswerChoices().get(answerChoiceCounter + 1));
             sb.append("\nAnswer Choice 3: ").append(this.getAnswerChoices().get(answerChoiceCounter + 2));
             sb.append("\nAnswer Choice 4: ").append(this.getAnswerChoices().get(answerChoiceCounter + 3));
             answerChoiceCounter += 4;
             sb.append("\nCorrect Answer: ").append(this.getCorrectAnswers().get(questionCounter)).append("\n");
+            questionCounter++;
         }
         return "" + sb;
     }
