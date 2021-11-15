@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 /**
  * Teacher.java
+ *
  * @author Ritu Atreyas and Rithvik Thiagu
  * @version 11/14/2021
  */
@@ -193,7 +194,7 @@ public class Teacher {
         }
     }
 
-    public static void main (String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         updateArrayList();
         Scanner scan = new Scanner(System.in);
         boolean start = true;
@@ -218,7 +219,7 @@ public class Teacher {
                 deleteQuiz();
             } else if (choice == 4) { // view submissions
                 // read from file
-                ArrayList<String> studentSubmissionsLocal= Student.readFile("src/StudentSubmissions.txt");
+                ArrayList<String> studentSubmissionsLocal = Student.readFile("src/StudentSubmissions.txt");
                 if (studentSubmissionsLocal == null || studentSubmissionsLocal.size() == 0) {
                     System.out.println("There aren't any submissions yet!");
                 } else {
