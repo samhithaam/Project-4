@@ -147,7 +147,8 @@ public class User {
                 // following lines of code are included to make sure user inputs a number
                 while (notNum) {
                     try {
-                        System.out.println("Are you a student or a teacher? Enter (1) for student and (2) for teacher.");
+                        System.out.println("Are you a student or a teacher? Enter (1) for " +
+                                "student and (2) for teacher.");
                         teacherOrStudent = Integer.parseInt(scan.nextLine());
                         notNum = false;
                     } catch (NumberFormatException e) {
@@ -221,28 +222,28 @@ public class User {
 
             System.out.println("You have successfully edited the account!");
         } else if (teacherOrStudent == 2) {
-                usernameExists = false;
-                System.out.print("Enter the username of the account you would like to edit: ");
-                oldUser = scan.nextLine();
-                if (teacherUsernames != null && teacherUsernames.size() > 0) {
-                    counter = 0;
-                    index = 0;
-                    for (String username : teacherUsernames) {
-                        if (username.equals(oldUser)) {
-                            usernameExists = true;
-                            index = counter; // index of oldUser
-                            break;
-                        }
-                        counter++;
+            usernameExists = false;
+            System.out.print("Enter the username of the account you would like to edit: ");
+            oldUser = scan.nextLine();
+            if (teacherUsernames != null && teacherUsernames.size() > 0) {
+                counter = 0;
+                index = 0;
+                for (String username : teacherUsernames) {
+                    if (username.equals(oldUser)) {
+                        usernameExists = true;
+                        index = counter; // index of oldUser
+                        break;
                     }
-                    if (!usernameExists) {
-                        System.out.println("An account with the username you entered does not exist.");
-                        return;
-                    }
-                } else {
+                    counter++;
+                }
+                if (!usernameExists) {
                     System.out.println("An account with the username you entered does not exist.");
                     return;
                 }
+            } else {
+                System.out.println("An account with the username you entered does not exist.");
+                return;
+            }
 
             System.out.println("Enter the new username you would to like to replace the old username with: ");
             String newUser = scan.nextLine();
@@ -498,7 +499,8 @@ public class User {
                 notNum = true;
                 while (notNum) {
                     try {
-                        System.out.println("Are you a student or a teacher? Enter (1) for student and (2) for teacher.");
+                        System.out.println("Are you a student or a teacher? Enter (1) for student" +
+                                " and (2) for teacher.");
                         teacherOrStudent = Integer.parseInt(scan.nextLine());
                         notNum = false;
                     } catch (NumberFormatException e) {
