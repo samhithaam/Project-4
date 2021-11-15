@@ -7,7 +7,12 @@ import java.sql.Timestamp;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-
+/**
+ * TestUser.java
+ *
+ * @author Samhitha Mupharaphu
+ * @version 11/14/2021
+ */
 public class TestUser {
     private final InputStream originalInput = System.in;
     private final PrintStream originalOutput = System.out;
