@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Teacher.java
+ * User.java
  * @author Ritu Atreyas and Samhitha Mupharaphu
  * @version 11/14/2021
  */
