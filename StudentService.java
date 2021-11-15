@@ -3,6 +3,12 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+/**
+ * StudentService.java
+ *
+ * @author Serena Gauri Ronanki
+ * @version 11/14/2021
+ */
 
 public class StudentService {
     private static ArrayList<String> studentQuiz = new ArrayList<>();
@@ -216,7 +222,7 @@ public class StudentService {
         }
         return fileContents;
     }
-   // displays all the available quiz titles
+    // displays all the available quiz titles
     public static void printQuizTitles() {
         if (Quiz.getQuizzes() != null) {
             for (Quiz quiz : Quiz.getQuizzes()) {
