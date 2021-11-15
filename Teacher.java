@@ -207,6 +207,7 @@ public class Teacher {
                 for (int j = 0; j < 8; j++) {
                     teacherSubmissions.remove(i);
                 }
+                System.out.println("Quiz Deleted");
             }
         }
         if (!quizExists) {
