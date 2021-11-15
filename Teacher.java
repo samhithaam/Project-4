@@ -2,7 +2,12 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.PrintWriter;
 import java.io.IOException;
-
+/**
+ * Teacher.java
+ *
+ * @author Ritu Atreyas and Rithvik Thiagu
+ * @version 11/14/2021
+ */
 public class Teacher {
 
     private static ArrayList<String> teacherSubmissions = new ArrayList<>();
