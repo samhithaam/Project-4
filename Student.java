@@ -1,12 +1,13 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 /**
  * Student.java
- * @author Ritu Atreyas and Serena Gauri Ronanki
+ * @author Ritu Atreyas
  * @version 11/14/2021
  */
 
@@ -16,18 +17,19 @@ public class Student {
 
     // [question #1, answer to Q1, student answer, question #2, answer to Q2, ...]
     // updated in printQuiz, accessed in viewGradedQuiz()
-    private static ArrayList<String> studentSubmissions = readFile("src/StudentSubmissions.txt");
+    private static ArrayList<String> studentSubmissions = new ArrayList<>();
 
     public static void main (String [] args) throws FileNotFoundException {
+        updateArrayList();
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
         do {
-            boolean notNumber = true;
-            while (notNumber) {
+            boolean notNum = true;
+            while (notNum) {
                 try {
                     System.out.println("Would you like to (1) take a quiz, or (2) view your graded quiz/quizzes?");
                     choice = Integer.parseInt(scanner.nextLine());
-                    notNumber = false;
+                    notNum = false;
                 } catch (NumberFormatException e) {
                     System.out.println("You didn't enter a number! Try again.");
                 }
@@ -39,12 +41,12 @@ public class Student {
             } else {
                 System.out.println("Invalid input!");
             }
-            notNumber = true;
-            while (notNumber) {
+            notNum = true;
+            while (notNum) {
                 try {
                     System.out.println("Would you like to (1) exit, or (2) try again?");
                     choice = Integer.parseInt(scanner.nextLine());
-                    notNumber = false;
+                    notNum = false;
                 } catch (NumberFormatException e) {
                     System.out.println("You didn't enter a number! Try again.");
                 }
@@ -55,19 +57,20 @@ public class Student {
     public static void takeQuiz(Scanner scanner) throws FileNotFoundException {
         boolean validInput = false;
         boolean takeQuizAgain;
-        if (Quiz.getQuizzes() == null || Quiz.getQuizzes().size() == 0) {
+
+        if (Quiz.readFile("src/quizList.txt") == null || Quiz.readFile("src/quizList.txt").size() == 0) {
             System.out.println("There are currently no quizzes for you to take!");
             return;
         }
 
         do {
             System.out.println("What quiz would you like to take?");
-            for (Quiz quiz : Quiz.getQuizzes()) {
+            for (Quiz quiz : Quiz.readFile("src/quizList.txt")) {
                 System.out.println(quiz.getQuizName());
                 // print all quiz names so student can choose the quiz they want to take
             }
             String quizChoice = scanner.nextLine();
-            for (Quiz quiz : Quiz.getQuizzes()) {
+            for (Quiz quiz : Quiz.readFile("src/quizList.txt")) {
                 if (quizChoice.equalsIgnoreCase(quiz.getQuizName())) {
                     validInput = true;
                     printQuiz(quiz.isRandomized(), quizChoice, scanner);
@@ -75,12 +78,14 @@ public class Student {
                     System.out.println(sdf.format(new Timestamp(System.currentTimeMillis())));
                 }
             } if (!validInput) {
-                System.out.println("Invalid input");
+                System.out.println("Invalid input.");
             }
             System.out.println("Would you like to take another quiz? Type 'y' for yes, 'n' for no.");
-            String input = scanner.nextLine();
-            takeQuizAgain = input.equalsIgnoreCase("y");
-        } while (!validInput || takeQuizAgain);
+            takeQuizAgain = scanner.nextLine().equalsIgnoreCase("y");
+            if (!takeQuizAgain) {
+                break;
+            }
+        } while (!validInput);
     }
 
     // Students can view their graded quizzes, the points for each individual question, and their total score
@@ -126,6 +131,7 @@ public class Student {
         System.out.println("\nTotal Points: " + Teacher.getTotalPoints());
     }
 
+    // use Math.random() to generate list of random numbers, used by printQuiz() to print in random order
     public static ArrayList<Integer> generateRandomNums(int start, int end, int length) {
         ArrayList<Integer> list = new ArrayList<>();
         int num = 0;
@@ -148,8 +154,8 @@ public class Student {
             studentSubmissionsLocal = new ArrayList<>();
         }
         if (!randomized) {
-            // Quiz questions will appear on the same page in the order they are added to the quiz
-            for (Quiz quiz : Quiz.getQuizzes()) {
+            // Quiz questions will appear in the order they are added to the quiz
+            for (Quiz quiz : Objects.requireNonNull(Quiz.readFile("src/quizList.txt"))) {
                 if (quiz.getQuizName().equalsIgnoreCase(quizTitle)) {
                     int pos = 0;
                     for (int i = 0; i < quiz.getQuestions().size(); i++) {
@@ -168,12 +174,13 @@ public class Student {
                 }
             }
         } else {
-            // Teachers can choose to randomize the order of questions and the order of potential options for a question
-            for (Quiz quiz : Quiz.getQuizzes()) {
+            // teachers can choose to randomize the order of questions and the order of answer choices
+            for (Quiz quiz : Objects.requireNonNull(Quiz.readFile("src/quizList.txt"))) {
                 if (quiz.getQuizName().equalsIgnoreCase(quizTitle)) {
                     int pos = 0;
                     int index = 0;
-                    ArrayList<Integer> randomNumsQ = generateRandomNums(0, quiz.getQuestions().size(), quiz.getQuestions().size());
+                    ArrayList<Integer> randomNumsQ = generateRandomNums(0, quiz.getQuestions().size(),
+                            quiz.getQuestions().size());
                     // for each quiz, a list of random numbers is required
                     // randomNumsQ.size() == quiz.getQuestions().size()
                     for (Integer integer : randomNumsQ) {
@@ -195,6 +202,8 @@ public class Student {
                 }
             }
         }
+
+        // update StudentSubmissions text file
         PrintWriter pw = new PrintWriter("src/StudentSubmissions.txt");
         for (String studentSubmission : studentSubmissionsLocal) {
             pw.println(studentSubmission);
@@ -203,6 +212,10 @@ public class Student {
     }
 
     public static ArrayList<String> readFile(String fileName) {
+        if (!new File(fileName).exists()) {
+            return null;
+        }
+        
         try (BufferedReader bfr = new BufferedReader(new FileReader(fileName))) {
             ArrayList<String> fileContents = new ArrayList<>();
             String line = new String("");
@@ -217,6 +230,13 @@ public class Student {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public static void updateArrayList() {
+        File studentSubmissionsFile = new File("src/StudentSubmissions.txt");
+        if (studentSubmissionsFile.exists()) {
+            studentSubmissions = readFile("src/StudentSubmissions.txt");
         }
     }
 
