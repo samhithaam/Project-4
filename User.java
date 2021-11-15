@@ -1,5 +1,3 @@
-package com.project04;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -143,7 +141,8 @@ public class User {
                 notNumber = true;
                 while (notNumber) {
                     try {
-                        System.out.println("Are you a student or a teacher? Enter (1) for student and (2) for teacher.");
+                        System.out.println("Are you a student or a teacher? Enter (1) for student " +
+                                "and (2) for teacher.");
                         teacherOrStudent = Integer.parseInt(scan.nextLine());
                         notNumber = false;
                     } catch (NumberFormatException e) {
