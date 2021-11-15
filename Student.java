@@ -5,16 +5,19 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 /**
- * Teacher.java
  * Student.java
  * @author Ritu Atreyas and Serena Gauri Ronanki
  * @version 11/14/2021
  */
+
 public class Student {
+
     private static final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm");
+
     // [question #1, answer to Q1, student answer, question #2, answer to Q2, ...]
     // updated in printQuiz, accessed in viewGradedQuiz()
     private static ArrayList<String> studentSubmissions = readFile("src/StudentSubmissions.txt");
+
     public static void main (String [] args) throws FileNotFoundException {
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
@@ -48,6 +51,7 @@ public class Student {
             }
         } while (choice != 1);
     }
+
     public static void takeQuiz(Scanner scanner) throws FileNotFoundException {
         boolean validInput = false;
         boolean takeQuizAgain;
@@ -55,6 +59,7 @@ public class Student {
             System.out.println("There are currently no quizzes for you to take!");
             return;
         }
+
         do {
             System.out.println("What quiz would you like to take?");
             for (Quiz quiz : Quiz.getQuizzes()) {
@@ -77,6 +82,7 @@ public class Student {
             takeQuizAgain = input.equalsIgnoreCase("y");
         } while (!validInput || takeQuizAgain);
     }
+
     // Students can view their graded quizzes, the points for each individual question, and their total score
     public static void viewGradedQuiz() {
         /*
@@ -84,10 +90,12 @@ public class Student {
             System.out.println("There aren't any submissions for you to view!");
             return;
         }
+
         if (Teacher.getPointValues().size() == 0) {
             System.out.println("Your teacher hasn't graded your quiz(zes) yet!");
             return;
         }
+
         for (int i = 0; i < studentSubmissions.size(); i += 3) {
             System.out.println("\nQuestion: " + studentSubmissions.get(i));
             System.out.println("Correct Answer: " + studentSubmissions.get(i + 1));
@@ -96,16 +104,19 @@ public class Student {
         }
         System.out.println("\nTotal Points: " + Teacher.getTotalPoints());
          */
+
         // read from file instead of accessing variable directly
         ArrayList<String> studentSubmissionsLocal= Student.readFile("src/StudentSubmissions.txt");
         if (studentSubmissionsLocal == null || studentSubmissionsLocal.size() == 0) {
             System.out.println("There aren't any submissions yet!");
             return;
         }
+
         if (Teacher.getPointValues().size() == 0) {
             System.out.println("Your teacher hasn't graded your quiz(zes) yet!");
             return;
         }
+
         for (int i = 0; i < studentSubmissionsLocal.size(); i += 3) {
             System.out.println("\nQuestion: " + studentSubmissionsLocal.get(i));
             System.out.println("Correct Answer: " + studentSubmissionsLocal.get(i + 1));
@@ -114,6 +125,7 @@ public class Student {
         }
         System.out.println("\nTotal Points: " + Teacher.getTotalPoints());
     }
+
     public static ArrayList<Integer> generateRandomNums(int start, int end, int length) {
         ArrayList<Integer> list = new ArrayList<>();
         int num = 0;
@@ -129,6 +141,7 @@ public class Student {
         }
         return list;
     }
+
     private static void printQuiz(boolean randomized, String quizTitle, Scanner scanner) throws FileNotFoundException {
         ArrayList<String> studentSubmissionsLocal = readFile("src/StudentSubmissions.txt");
         if (studentSubmissionsLocal == null) {
@@ -188,6 +201,7 @@ public class Student {
         }
         pw.close();
     }
+
     public static ArrayList<String> readFile(String fileName) {
         try (BufferedReader bfr = new BufferedReader(new FileReader(fileName))) {
             ArrayList<String> fileContents = new ArrayList<>();
@@ -205,6 +219,7 @@ public class Student {
             return null;
         }
     }
+
     public static ArrayList<String> getStudentSubmissions() {
         return studentSubmissions;
     }
