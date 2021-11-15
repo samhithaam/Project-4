@@ -84,7 +84,7 @@ public class User {
                                 break;
                             }
                         }
-                        if( !isMatch ) {
+                        if (!isMatch) {
                             studentUsernames.add(user);
                             break;
                         }
@@ -94,8 +94,8 @@ public class User {
                         }
                         break;
                     }
-                } while( isMatch );
-
+                } while (isMatch);
+                
                 System.out.print("\nEnter a password: ");
                 String pass = scan.nextLine();
                 studentPasswords.add(pass);
@@ -118,7 +118,7 @@ public class User {
                                 break;
                             }
                         }
-                        if( !isMatch ) {
+                        if (!isMatch) {
                             teacherUsernames.add(user);
                             break;
                         }
@@ -128,7 +128,7 @@ public class User {
                         }
                         break;
                     }
-                } while( isMatch );
+                } while (isMatch);
 
                 System.out.print("Enter a password: ");
                 String pass = scan.nextLine();
@@ -381,7 +381,7 @@ public class User {
                     System.out.println("Enter a username: ");
                     String user = scan.nextLine();
                     if (studentUsernames != null && studentUsernames.size() > 0) {
-                        indexStudentUsername=0;
+                        indexStudentUsername = 0;
                         for (String username : studentUsernames) {
                             if (username.equals(user)) {
                                 usernameExists = true;
@@ -407,7 +407,7 @@ public class User {
                     System.out.println("Enter your password: ");
                     String pass = scan.nextLine();
                     String passwordStored = studentPasswords.get(indexStudentUsername);
-                    if( pass.equals(passwordStored)) {
+                    if (pass.equals(passwordStored)) {
                         System.out.println("You are signed in as a student!");
                         signedIn = true;
                         Student.main(null);
@@ -425,8 +425,7 @@ public class User {
                     System.out.println("Enter a username: ");
                     String user = scan.nextLine();
                     if (teacherUsernames != null && teacherUsernames.size() > 0) {
-                        //counter = 0;
-                        indexTeacherName=0;
+                        indexTeacherName = 0;
                         for (String username : teacherUsernames) {
                             if (username.equals(user)) {
                                 usernameExists = true;
@@ -450,7 +449,7 @@ public class User {
                     System.out.println("Enter your password: ");
                     String pass = scan.nextLine();
                     String passwordStored = teacherPasswords.get(indexTeacherName);
-                    if( pass.equals(passwordStored)) {
+                    if (pass.equals(passwordStored)) {
                         System.out.println("You are signed in as a teacher!");
                         signedIn = true;
                         Teacher.main(null);
@@ -499,17 +498,17 @@ public class User {
     }
 
     private static void readAllFiles() {
-        File studentUserNamesFile = new File("src/StudentUsernames.txt");
-        File studentPasswordsFile = new File("src/StudentUsernames.txt");
+        File studentUsernamesFile = new File("src/StudentUsernames.txt");
+        File studentPasswordsFile = new File("src/StudentPasswords.txt");
         File teacherUsernamesFile = new File("src/TeacherUsernames.txt");
         File teacherPasswordsFile = new File("src/TeacherPasswords.txt");
 
-        if( studentUserNamesFile.exists() && studentPasswordsFile.exists() ) {
+        if (studentUsernamesFile.exists() && studentPasswordsFile.exists()) {
             studentUsernames = readFile("src/StudentUsernames.txt");
             studentPasswords = readFile("src/StudentPasswords.txt");
         }
 
-        if( teacherUsernamesFile.exists() && teacherPasswordsFile.exists() ) {
+        if (teacherUsernamesFile.exists() && teacherPasswordsFile.exists()) {
             teacherUsernames = readFile("src/TeacherUsernames.txt");
             teacherPasswords = readFile("src/TeacherPasswords.txt");
         }
