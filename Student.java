@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 /**
- * Teacher.java
+ * Student.java
  * @author Ritu Atreyas and Serena Gauri Ronanki
  * @version 11/14/2021
  */
