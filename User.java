@@ -5,6 +5,9 @@ import java.util.Scanner;
 /**
  * User.java
  *
+ * If user creates an account and then logs out, they are still able to log back in
+ * as data is stored in text files.
+ *
  * @author Ritu Atreyas and Samhitha Mupharaphu
  * @version 11/14/2021
  */
@@ -19,22 +22,21 @@ public class User {
 
     // calls the appropriate method
     public static void main(String[] args) throws Exception {
-        readAllFiles();
-
+        readAllFiles(); // updates contents of ArrayList if there is data that is stored in text file
         Scanner scan = new Scanner(System.in);
-        boolean notNumber = true;
+        boolean notNum = true;
         boolean exit = false;
         int choice = 0;
         do {
-            notNumber = true;
+            notNum = true;
             choice = 0;
             // following lines of code are included to make sure user inputs a number
-            while (notNumber) {
+            while (notNum) {
                 try {
                     System.out.println("\nWhat would you like to do? \n1. Create an account \n2. Edit an account" +
                             "\n3. Delete an account\n4. Sign in\n5. Exit.");
                     choice = Integer.parseInt(scan.nextLine());
-                    notNumber = false;
+                    notNum = false;
                 } catch (NumberFormatException e) {
                     System.out.println("You didn't enter a number! Try again.");
                 }
@@ -50,19 +52,20 @@ public class User {
             } else if (choice == 5) {
                 exit = true;
             } else {
-                System.out.println("Invalid input. Please try again!");
+                System.out.println("Invalid input. Please try again!"); // handles invalid input
             }
-        } while (!exit);
+        } while (!exit); // loops until user enters 5
     }
 
     public static void createAccount(Scanner scan) {
         int teacherOrStudent = 0;
-        boolean notNumber = true;
-        while (notNumber) {
+        boolean notNum = true;
+        // following lines of code are included to make sure user inputs a number
+        while (notNum) {
             try {
                 System.out.println("Are you a student or a teacher? Enter (1) for student and (2) for teacher.");
                 teacherOrStudent = Integer.parseInt(scan.nextLine());
-                notNumber = false;
+                notNum = false;
             } catch (NumberFormatException e) {
                 System.out.println("You didn't enter a number! Try again.");
             }
@@ -72,30 +75,33 @@ public class User {
         while (!validInput) {
             if (teacherOrStudent == 1) {
                 validInput = true;
-                boolean isMatch;
-                do {
-                    isMatch = false;
+                boolean addSuccess = false;
+                while (true) {
                     System.out.print("Enter a username: ");
                     String user = scan.nextLine();
+                    // check whether ArrayList is null to avoid NullPointerException
                     if (studentUsernames != null && studentUsernames.size() > 0) {
                         for (String username : studentUsernames) {
                             if (username.equals(user)) {
                                 System.out.println("\nUsername already exists, please try again.");
-                                isMatch = true;
+                            } else {
+                                studentUsernames.add(user);
+                                addSuccess = true;
                                 break;
                             }
                         }
-                        if (!isMatch) {
-                            studentUsernames.add(user);
+                        if (addSuccess) {
                             break;
                         }
                     } else {
+                        // can add without checking whether username already exists
+                        // if size of studentUsernames ArrayList is 0
                         if (studentUsernames != null) {
                             studentUsernames.add(user);
                         }
                         break;
                     }
-                } while (isMatch);
+                }
 
                 System.out.print("\nEnter a password: ");
                 String pass = scan.nextLine();
@@ -105,22 +111,21 @@ public class User {
 
             } else if (teacherOrStudent == 2) {
                 validInput = true;
-
-                boolean isMatch;
-                do {
-                    isMatch = false;
+                boolean addSuccess = false;
+                while (true) {
                     System.out.println("Enter a username: ");
                     String user = scan.nextLine();
                     if (teacherUsernames != null && teacherUsernames.size() > 0) {
                         for (String username : teacherUsernames) {
                             if (username.equals(user)) {
                                 System.out.println("Username already exists, please try again.");
-                                isMatch = true;
+                            } else {
+                                teacherUsernames.add(user);
+                                addSuccess = true;
                                 break;
                             }
                         }
-                        if (!isMatch) {
-                            teacherUsernames.add(user);
+                        if (addSuccess) {
                             break;
                         }
                     } else {
@@ -129,7 +134,7 @@ public class User {
                         }
                         break;
                     }
-                } while (isMatch);
+                }
 
                 System.out.print("Enter a password: ");
                 String pass = scan.nextLine();
@@ -138,13 +143,13 @@ public class User {
                 System.out.println("\nYou have successfully created an account!");
             } else {
                 System.out.println("Invalid input! Try again.");
-                notNumber = true;
-                while (notNumber) {
+                notNum = true;
+                // following lines of code are included to make sure user inputs a number
+                while (notNum) {
                     try {
-                        System.out.println("Are you a student or a teacher? Enter (1) for student " +
-                                "and (2) for teacher.");
+                        System.out.println("Are you a student or a teacher? Enter (1) for student and (2) for teacher.");
                         teacherOrStudent = Integer.parseInt(scan.nextLine());
-                        notNumber = false;
+                        notNum = false;
                     } catch (NumberFormatException e) {
                         System.out.println("You didn't enter a number! Try again.");
                     }
@@ -158,14 +163,18 @@ public class User {
         writeFile(teacherPasswords, "src/TeacherPasswords.txt");
     }
 
+    // if a specific username is stored at index 0, the corresponding password is stored at index 0
+    // the method stores index value of username being removed, and removes the element at that index value from
+    // the passwords ArrayList
     public static void editAccount(Scanner scan) {
-        boolean notNumber = true;
+        boolean notNum = true;
         int teacherOrStudent = 0;
-        while (notNumber) {
+        // following lines of code are included to make sure user inputs a number
+        while (notNum) {
             try {
                 System.out.println("Are you a student or a teacher? Enter (1) for student and (2) for teacher.");
                 teacherOrStudent = Integer.parseInt(scan.nextLine());
-                notNumber = false;
+                notNum = false;
             } catch (NumberFormatException e) {
                 System.out.println("You didn't enter a number! Try again.");
             }
@@ -212,28 +221,28 @@ public class User {
 
             System.out.println("You have successfully edited the account!");
         } else if (teacherOrStudent == 2) {
-            usernameExists = false;
-            System.out.print("Enter the username of the account you would like to edit: ");
-            oldUser = scan.nextLine();
-            if (teacherUsernames != null && teacherUsernames.size() > 0) {
-                counter = 0;
-                index = 0;
-                for (String username : teacherUsernames) {
-                    if (username.equals(oldUser)) {
-                        usernameExists = true;
-                        index = counter; // index of oldUser
-                        break;
+                usernameExists = false;
+                System.out.print("Enter the username of the account you would like to edit: ");
+                oldUser = scan.nextLine();
+                if (teacherUsernames != null && teacherUsernames.size() > 0) {
+                    counter = 0;
+                    index = 0;
+                    for (String username : teacherUsernames) {
+                        if (username.equals(oldUser)) {
+                            usernameExists = true;
+                            index = counter; // index of oldUser
+                            break;
+                        }
+                        counter++;
                     }
-                    counter++;
-                }
-                if (!usernameExists) {
+                    if (!usernameExists) {
+                        System.out.println("An account with the username you entered does not exist.");
+                        return;
+                    }
+                } else {
                     System.out.println("An account with the username you entered does not exist.");
                     return;
                 }
-            } else {
-                System.out.println("An account with the username you entered does not exist.");
-                return;
-            }
 
             System.out.println("Enter the new username you would to like to replace the old username with: ");
             String newUser = scan.nextLine();
@@ -249,12 +258,12 @@ public class User {
             System.out.println("You have successfully edited the account!");
         } else {
             System.out.println("Invalid input! Try again.");
-            notNumber = true;
-            while (notNumber) {
+            notNum = true;
+            while (notNum) {
                 try {
                     System.out.println("Are you a student or a teacher? Enter (1) for student and (2) for teacher.");
                     teacherOrStudent = Integer.parseInt(scan.nextLine());
-                    notNumber = false;
+                    notNum = false;
                 } catch (NumberFormatException e) {
                     System.out.println("You didn't enter a number! Try again.");
                 }
@@ -267,13 +276,13 @@ public class User {
     }
 
     public static void deleteAccount(Scanner scan) {
-        boolean notNumber = true;
+        boolean notNum = true;
         int teacherOrStudent = 0;
-        while (notNumber) {
+        while (notNum) {
             try {
                 System.out.println("Are you a student or a teacher? Enter (1) for student and (2) for teacher.");
                 teacherOrStudent = Integer.parseInt(scan.nextLine());
-                notNumber = false;
+                notNum = false;
             } catch (NumberFormatException e) {
                 System.out.println("You didn't enter a number! Try again.");
             }
@@ -339,12 +348,12 @@ public class User {
             System.out.println("You have successfully deleted the account!");
         } else {
             System.out.println("Invalid input! Try again.");
-            notNumber = true;
-            while (notNumber) {
+            notNum = true;
+            while (notNum) {
                 try {
                     System.out.println("Are you a student or a teacher? Enter (1) for student and (2) for teacher.");
                     teacherOrStudent = Integer.parseInt(scan.nextLine());
-                    notNumber = false;
+                    notNum = false;
                 } catch (NumberFormatException e) {
                     System.out.println("You didn't enter a number! Try again.");
                 }
@@ -356,26 +365,31 @@ public class User {
         writeFile(teacherPasswords, "src/TeacherPasswords.txt");
     }
 
+
+    // first checks if username exists in ArrayList, if yes, stores index
+    // checks if element at that index in passwords ArrayList matches what the user entered as their password
+    // if yes, sign in is successful
     public static void signIn(Scanner scan) throws IOException {
-        boolean notNumber = true;
+        boolean notNum = true;
         int teacherOrStudent = 0;
-        while (notNumber) {
+        while (notNum) {
             try {
                 System.out.println("Are you a student or a teacher? Enter (1) for student and (2) for teacher.");
                 teacherOrStudent = Integer.parseInt(scan.nextLine());
-                notNumber = false;
+                notNum = false;
             } catch (NumberFormatException e) {
                 System.out.println("You didn't enter a number! Try again.");
             }
         }
 
         boolean validInput = false;
+        int counter;
+        int indexUsername = 0;
+        int indexPassword = 0;
         boolean usernameExists;
-
         while (!validInput) {
             if (teacherOrStudent == 1) {
                 boolean signedIn;
-                int indexStudentUsername;
 
                 validInput = true;
                 usernameExists = false;
@@ -383,24 +397,25 @@ public class User {
                     System.out.println("Enter a username: ");
                     String user = scan.nextLine();
                     if (studentUsernames != null && studentUsernames.size() > 0) {
-                        indexStudentUsername = 0;
+                        counter = 0;
                         for (String username : studentUsernames) {
                             if (username.equals(user)) {
                                 usernameExists = true;
+                                indexUsername = counter;
                                 break;
                             }
-                            indexStudentUsername++;
+                            counter++;
                         }
                         if (!usernameExists) {
+                            System.out.println("Username doesn't exist. Please try again!");
                             // that username doesn't exist but there are other usernames, therefore, give user
                             // the chance to try again
-                            System.out.println("Username doesn't exist. Please try again!");
                         } else {
                             break;
                         }
                     } else {
+                        System.out.println("No student users exist in the system!.");
                         // no usernames exist, no need to prompt user again
-                        System.out.println("No student users exist in the system!");
                         return;
                     }
                 }
@@ -408,18 +423,27 @@ public class User {
                 while (!signedIn) {
                     System.out.println("Enter your password: ");
                     String pass = scan.nextLine();
-                    String passwordStored = studentPasswords.get(indexStudentUsername);
-                    if (pass.equals(passwordStored)) {
-                        System.out.println("You are signed in as a student!");
-                        signedIn = true;
-                        Student.main(null);
-                    } else {
-                        System.out.println("Error! Password doesn't match. Unable to sign in.");
+                    if (studentPasswords != null && studentPasswords.size() > 0) {
+                        counter = 0;
+                        for (String password : studentPasswords) {
+                            if (pass.equals(password)) {
+                                indexPassword = counter;
+                                if (indexUsername == indexPassword) {
+                                    System.out.println("You are signed in!");
+                                    signedIn = true;
+                                    Student.main(null);
+                                } else {
+                                    System.out.println("Error! Password doesn't match. Unable to sign in.");
+                                }
+                                break; // break out of for loop after calling main method in Student.java or
+                                // printing error message
+                            }
+                            counter++;
+                        }
                     }
                 }
             } else if (teacherOrStudent == 2) {
                 boolean signedIn;
-                int indexTeacherName;
 
                 validInput = true;
                 usernameExists = false;
@@ -427,13 +451,14 @@ public class User {
                     System.out.println("Enter a username: ");
                     String user = scan.nextLine();
                     if (teacherUsernames != null && teacherUsernames.size() > 0) {
-                        indexTeacherName = 0;
+                        counter = 0;
                         for (String username : teacherUsernames) {
                             if (username.equals(user)) {
                                 usernameExists = true;
+                                indexUsername = counter;
                                 break;
                             }
-                            indexTeacherName++;
+                            counter++;
                         }
                         if (!usernameExists) {
                             System.out.println("Username doesn't exist. Please try again!");
@@ -441,7 +466,7 @@ public class User {
                             break;
                         }
                     } else {
-                        System.out.println("Username doesn't exist.");
+                        System.out.println("No teacher users exist in the system!");
                         return;
                     }
                 }
@@ -450,24 +475,32 @@ public class User {
                 while (!signedIn) {
                     System.out.println("Enter your password: ");
                     String pass = scan.nextLine();
-                    String passwordStored = teacherPasswords.get(indexTeacherName);
-                    if (pass.equals(passwordStored)) {
-                        System.out.println("You are signed in as a teacher!");
-                        signedIn = true;
-                        Teacher.main(null);
-                    } else {
-                        System.out.println("Error! Password doesn't match. Unable to sign in.");
+                    if (teacherPasswords != null && teacherPasswords.size() > 0) {
+                        counter = 0;
+                        for (String password : teacherPasswords) {
+                            if (pass.equals(password)) {
+                                indexPassword = counter;
+                                if (indexUsername == indexPassword) {
+                                    System.out.println("You are signed in!");
+                                    signedIn = true;
+                                    Teacher.main(null);
+                                } else {
+                                    System.out.println("Error! Password doesn't match. Unable to sign in.");
+                                }
+                                break;
+                            }
+                            counter++;
+                        }
                     }
                 }
             } else {
                 System.out.println("Invalid input! Try again.");
-                notNumber = true;
-                while (notNumber) {
+                notNum = true;
+                while (notNum) {
                     try {
-                        System.out.println("Are you a student or a teacher? Enter (1) for student " +
-                                "and (2) for teacher.");
+                        System.out.println("Are you a student or a teacher? Enter (1) for student and (2) for teacher.");
                         teacherOrStudent = Integer.parseInt(scan.nextLine());
-                        notNumber = false;
+                        notNum = false;
                     } catch (NumberFormatException e) {
                         System.out.println("You didn't enter a number! Try again.");
                     }
@@ -500,23 +533,6 @@ public class User {
         }
     }
 
-    private static void readAllFiles() {
-        File studentUsernamesFile = new File("src/StudentUsernames.txt");
-        File studentPasswordsFile = new File("src/StudentPasswords.txt");
-        File teacherUsernamesFile = new File("src/TeacherUsernames.txt");
-        File teacherPasswordsFile = new File("src/TeacherPasswords.txt");
-
-        if (studentUsernamesFile.exists() && studentPasswordsFile.exists()) {
-            studentUsernames = readFile("src/StudentUsernames.txt");
-            studentPasswords = readFile("src/StudentPasswords.txt");
-        }
-
-        if (teacherUsernamesFile.exists() && teacherPasswordsFile.exists()) {
-            teacherUsernames = readFile("src/TeacherUsernames.txt");
-            teacherPasswords = readFile("src/TeacherPasswords.txt");
-        }
-    }
-
     public static ArrayList<String> getStudentUsernames() {
         return studentUsernames;
     }
@@ -531,5 +547,23 @@ public class User {
 
     public static ArrayList<String> getTeacherPasswords() {
         return teacherPasswords;
+    }
+
+    private static void readAllFiles() {
+        File studentUsernamesFile = new File("src/StudentUsernames.txt");
+        File studentPasswordsFile = new File("src/StudentPasswords.txt");
+        File teacherUsernamesFile = new File("src/TeacherUsernames.txt");
+        File teacherPasswordsFile = new File("src/TeacherPasswords.txt");
+
+        // ensure that files exist before calling readFile to avoid FileNotFoundException or other exceptions
+        if (studentUsernamesFile.exists() && studentPasswordsFile.exists()) {
+            studentUsernames = readFile("src/StudentUsernames.txt");
+            studentPasswords = readFile("src/StudentPasswords.txt");
+        }
+
+        if (teacherUsernamesFile.exists() && teacherPasswordsFile.exists()) {
+            teacherUsernames = readFile("src/TeacherUsernames.txt");
+            teacherPasswords = readFile("src/TeacherPasswords.txt");
+        }
     }
 }
