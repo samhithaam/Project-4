@@ -14,6 +14,8 @@ All four of these classes work with each other in order to allow students and te
 
 COMPILING AND RUNNING: In order to run our program, you need to run User.java. User.java will give you the option to create/edit/delete an account, or sign in. After choosing one of the above options, you will have to specify whether you are a student or a teacher. If the user chooses to create/edit/delete an account, the information they input is stored in or removed from an ArrayList. If the user chooses to sign in, and they are successful in doing so, the main method in either Student or Teacher is called. If the user is a student, they are given the option to either take a quiz or view their graded quizzes. If the user is a teacher, they are given the option to either create/edit/delete quizzes, or grade student submissions. 
 
+Note: In order to run the program smoothly, the user should have the files "QuizList.txt", "StudentUsernames.txt", "StudentPasswords.txt", "TeacherUsernames.txt", and "TeacherPasswords.txt" already created. 
+
 TESTING: We tested the code by trying all possible input values when prompted and seeing if all of our loops and messages printed as expected. That's when we realized that we needed to add while loops to keep prompting the user for input until their input is valid. We also created a test case class for User.
 
 Team Members: Ritu Atreyas, Samhitha Mupharaphu, Serena Gauri Ronanki, Rithvik Thiagu
