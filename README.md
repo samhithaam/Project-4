@@ -20,4 +20,5 @@ Team Members: Ritu Atreyas, Samhitha Mupharaphu, Serena Gauri Ronanki, Rithvik T
 
 Submission:
 Ritu Atreyas: report on Brightspace
+
 Samhitha Mupharaphu: Vocareum workspace
