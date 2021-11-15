@@ -31,9 +31,7 @@ public class StudentService {
 
             ArrayList<Quiz> quizzes = Quiz.getQuizzes();
             if (quizzes == null) {
-                System.out.println("No quizzes available.\nChoose 0) Exit");
-                sc.nextLine();
-                sc.nextLine();
+                System.out.println("No quizzes available.Come back later!");
                 runTest = false;
             } else {
                 if (choice == 1) {
@@ -58,7 +56,7 @@ public class StudentService {
                     }
 
                 } else if (choice == 0) {
-                    System.out.println("Bye " + username + "!");
+                    System.out.println("Comeback later " + username + "!");
                     break;
                 } else {
                     System.out.println("Invalid Input!");
