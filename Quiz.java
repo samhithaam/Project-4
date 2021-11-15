@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * Teacher.java
+ * Quiz.java
  * @author Ritu Atreyas
  * @version 11/14/2021
  */
