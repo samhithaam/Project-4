@@ -16,5 +16,8 @@ COMPILING AND RUNNING: In order to run our program, you need to run User.java. U
 
 TESTING: We tested the code by trying all possible input values when prompted and seeing if all of our loops and messages printed as expected. That's when we realized that we needed to add while loops to keep prompting the user for input until their input is valid. We also created a test case class for User.
 
-Ritu: report on Brightspace
-Samhitha: Vocareum workspace
+Team Members: Ritu Atreyas, Samhitha Mupharaphu, Serena Gauri Ronanki, Rithvik Thiagu
+
+Submission:
+Ritu Atreyas: report on Brightspace
+Samhitha Mupharaphu: Vocareum workspace
