@@ -49,7 +49,7 @@ public class TestUser {
             User.main(new String[0]);
         } catch (Exception e) {
             e.printStackTrace();
-            fail("Error!!!");
+            fail("Error!");
         }
         String out = getOutput();
         System.out.println(out);
@@ -60,7 +60,7 @@ public class TestUser {
                 "Enter a username: \n" + "Enter a password: \n" +
                 "You have successfully created an account!\n" +
                 "What would you like to do? \n1. Create an account \n2. Edit an account" +
-                "\n3. Delete an account\n4. Sign in\n5. Exit.\nExiting!!!";
+                "\n3. Delete an account\n4. Sign in\n5. Exit.\n";
         assertEquals("Checking create condition", expectedFull, out);
     }
 
@@ -77,7 +77,7 @@ public class TestUser {
             User.main(new String[0]);
         } catch (Exception e) {
             e.printStackTrace();
-            fail("Error!!!");
+            fail("Error!");
         }
         String out = getOutput();
         System.out.println(out);
@@ -88,7 +88,7 @@ public class TestUser {
                 "Enter a username: \n" + "Enter a password: \n" +
                 "You have successfully created an account!\n" +
                 "What would you like to do? \n1. Create an account \n2. Edit an account" +
-                "\n3. Delete an account\n4. Sign in\n5. Exit.\nExiting!!!";
+                "\n3. Delete an account\n4. Sign in\n5. Exit.\n";
         assertEquals("Checking create condition", expectedFull, out);
     }
 
@@ -105,7 +105,7 @@ public class TestUser {
             User.main(new String[0]);
         } catch (Exception e) {
             e.printStackTrace();
-            fail("Error!!!");
+            fail("Error!");
         }
         String out = getOutput();
         System.out.println(out);
@@ -116,7 +116,7 @@ public class TestUser {
                 "Enter a username: \n" + "Enter a password: \n" +
                 "You have successfully created an account!\n" +
                 "What would you like to do? \n1. Create an account \n2. Edit an account" +
-                "\n3. Delete an account\n4. Sign in\n5. Exit.\nExiting!!!";
+                "\n3. Delete an account\n4. Sign in\n5. Exit.\n";
         assertEquals("Checking create condition", expectedFull, out);
     }
 
@@ -133,7 +133,7 @@ public class TestUser {
             User.main(new String[0]);
         } catch (Exception e) {
             e.printStackTrace();
-            fail("Error!!!");
+            fail("Error!");
         }
         String out = getOutput();
         System.out.println(out);
@@ -144,7 +144,7 @@ public class TestUser {
                 "Enter a username: \n" + "Enter a password: \n" +
                 "You have successfully created an account!\n" +
                 "What would you like to do? \n1. Create an account \n2. Edit an account" +
-                "\n3. Delete an account\n4. Sign in\n5. Exit.\nExiting!!!";
+                "\n3. Delete an account\n4. Sign in\n5. Exit.\n";
         assertEquals("Checking create condition", expectedFull, out);
     }
 
@@ -156,13 +156,13 @@ public class TestUser {
             User.main(new String[0]);
         } catch (Exception e) {
             e.printStackTrace();
-            fail("Error!!!");
+            fail("Error!");
         }
         String out = getOutput();
         System.out.println(out);
 
         String expectedFull = "What would you like to do? \n1. Create an account \n2. Edit an account" +
-                "\n3. Delete an account\n4. Sign in\n5. Exit.\nExiting!!!";
+                "\n3. Delete an account\n4. Sign in\n5. Exit.\n";
         assertEquals("Checking exit condition", expectedFull, out);
     }
 }
