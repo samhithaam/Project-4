@@ -33,7 +33,7 @@ public class User {
             // following lines of code are included to make sure user inputs a number
             while (notNumber) {
                 try {
-                    System.out.println("What would you like to do? \n1. Create an account \n2. Edit an account" +
+                    System.out.println("\nWhat would you like to do? \n1. Create an account \n2. Edit an account" +
                             "\n3. Delete an account\n4. Sign in\n5. Exit.");
                     choice = Integer.parseInt(scan.nextLine());
                     notNumber = false;
@@ -50,7 +50,6 @@ public class User {
             } else if (choice == 4) {
                 signIn(scan);
             } else if (choice == 5) {
-                System.out.print("Exiting!!!");
                 exit = true;
             } else {
                 System.out.println("Invalid input. Please try again!");
@@ -429,7 +428,6 @@ public class User {
                     System.out.println("Enter a username: ");
                     String user = scan.nextLine();
                     if (teacherUsernames != null && teacherUsernames.size() > 0) {
-                        //counter = 0;
                         indexTeacherName = 0;
                         for (String username : teacherUsernames) {
                             if (username.equals(user)) {
@@ -503,12 +501,12 @@ public class User {
     }
 
     private static void readAllFiles() {
-        File studentUserNamesFile = new File("src/StudentUsernames.txt");
-        File studentPasswordsFile = new File("src/StudentUsernames.txt");
+        File studentUsernamesFile = new File("src/StudentUsernames.txt");
+        File studentPasswordsFile = new File("src/StudentPasswords.txt");
         File teacherUsernamesFile = new File("src/TeacherUsernames.txt");
         File teacherPasswordsFile = new File("src/TeacherPasswords.txt");
 
-        if (studentUserNamesFile.exists() && studentPasswordsFile.exists()) {
+        if (studentUsernamesFile.exists() && studentPasswordsFile.exists()) {
             studentUsernames = readFile("src/StudentUsernames.txt");
             studentPasswords = readFile("src/StudentPasswords.txt");
         }
