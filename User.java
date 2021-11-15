@@ -18,10 +18,8 @@ public class User {
 
     // calls the appropriate method
     public static void main (String[] args) throws Exception {
-        studentUsernames = readFile("src/StudentUsernames.txt");
-        studentPasswords = readFile("src/StudentPasswords.txt");
-        teacherUsernames = readFile("src/TeacherUsernames.txt");
-        teacherPasswords = readFile("src/TeacherPasswords.txt");
+        readAllFiles();
+
         Scanner scan = new Scanner(System.in);
         boolean notNumber = true;
         boolean exit = false;
@@ -68,26 +66,26 @@ public class User {
                 System.out.println("You didn't enter a number! Try again.");
             }
         }
-        
+
         boolean validInput = false;
         while (!validInput) {
             if (teacherOrStudent == 1) {
                 validInput = true;
-                boolean addSuccess = false;
-                while (true) {
+                boolean isMatch;
+                do {
+                    isMatch = false;
                     System.out.print("Enter a username: ");
                     String user = scan.nextLine();
                     if (studentUsernames != null && studentUsernames.size() > 0) {
                         for (String username : studentUsernames) {
                             if (username.equals(user)) {
                                 System.out.println("\nUsername already exists, please try again.");
-                            } else {
-                                studentUsernames.add(user);
-                                addSuccess = true;
+                                isMatch = true;
                                 break;
                             }
                         }
-                        if (addSuccess) {
+                        if( !isMatch ) {
+                            studentUsernames.add(user);
                             break;
                         }
                     } else {
@@ -96,7 +94,7 @@ public class User {
                         }
                         break;
                     }
-                }
+                } while( isMatch );
 
                 System.out.print("\nEnter a password: ");
                 String pass = scan.nextLine();
@@ -106,21 +104,22 @@ public class User {
 
             } else if (teacherOrStudent == 2) {
                 validInput = true;
-                boolean addSuccess = false;
-                while (true) {
+
+                boolean isMatch;
+                do {
+                    isMatch = false;
                     System.out.println("Enter a username: ");
                     String user = scan.nextLine();
                     if (teacherUsernames != null && teacherUsernames.size() > 0) {
                         for (String username : teacherUsernames) {
                             if (username.equals(user)) {
                                 System.out.println("Username already exists, please try again.");
-                            } else {
-                                teacherUsernames.add(user);
-                                addSuccess = true;
+                                isMatch = true;
                                 break;
                             }
                         }
-                        if (addSuccess) {
+                        if( !isMatch ) {
+                            teacherUsernames.add(user);
                             break;
                         }
                     } else {
@@ -129,7 +128,7 @@ public class User {
                         }
                         break;
                     }
-                }
+                } while( isMatch );
 
                 System.out.print("Enter a password: ");
                 String pass = scan.nextLine();
@@ -211,28 +210,28 @@ public class User {
 
             System.out.println("You have successfully edited the account!");
         } else if (teacherOrStudent == 2) {
-                usernameExists = false;
-                System.out.print("Enter the username of the account you would like to edit: ");
-                oldUser = scan.nextLine();
-                if (teacherUsernames != null && teacherUsernames.size() > 0) {
-                    counter = 0;
-                    index = 0;
-                    for (String username : teacherUsernames) {
-                        if (username.equals(oldUser)) {
-                            usernameExists = true;
-                            index = counter; // index of oldUser
-                            break;
-                        }
-                        counter++;
+            usernameExists = false;
+            System.out.print("Enter the username of the account you would like to edit: ");
+            oldUser = scan.nextLine();
+            if (teacherUsernames != null && teacherUsernames.size() > 0) {
+                counter = 0;
+                index = 0;
+                for (String username : teacherUsernames) {
+                    if (username.equals(oldUser)) {
+                        usernameExists = true;
+                        index = counter; // index of oldUser
+                        break;
                     }
-                    if (!usernameExists) {
-                        System.out.println("An account with the username you entered does not exist.");
-                        return;
-                    }
-                } else {
+                    counter++;
+                }
+                if (!usernameExists) {
                     System.out.println("An account with the username you entered does not exist.");
                     return;
                 }
+            } else {
+                System.out.println("An account with the username you entered does not exist.");
+                return;
+            }
 
             System.out.println("Enter the new username you would to like to replace the old username with: ");
             String newUser = scan.nextLine();
@@ -369,13 +368,12 @@ public class User {
         }
 
         boolean validInput = false;
-        int counter;
-        int indexUsername = 0;
-        int indexPassword = 0;
         boolean usernameExists;
+
         while (!validInput) {
             if (teacherOrStudent == 1) {
                 boolean signedIn;
+                int indexStudentUsername;
 
                 validInput = true;
                 usernameExists = false;
@@ -383,25 +381,24 @@ public class User {
                     System.out.println("Enter a username: ");
                     String user = scan.nextLine();
                     if (studentUsernames != null && studentUsernames.size() > 0) {
-                        counter = 0;
+                        indexStudentUsername=0;
                         for (String username : studentUsernames) {
                             if (username.equals(user)) {
                                 usernameExists = true;
-                                indexUsername = counter;
                                 break;
                             }
-                            counter++;
+                            indexStudentUsername++;
                         }
                         if (!usernameExists) {
-                            System.out.println("Username doesn't exist. Please try again!");
                             // that username doesn't exist but there are other usernames, therefore, give user
                             // the chance to try again
+                            System.out.println("Username doesn't exist. Please try again!");
                         } else {
                             break;
                         }
                     } else {
-                        System.out.println("Username doesn't exist.");
                         // no usernames exist, no need to prompt user again
+                        System.out.println("No student users exist in the system!");
                         return;
                     }
                 }
@@ -409,27 +406,18 @@ public class User {
                 while (!signedIn) {
                     System.out.println("Enter your password: ");
                     String pass = scan.nextLine();
-                    if (studentPasswords != null && studentPasswords.size() > 0) {
-                        counter = 0;
-                        for (String password : studentPasswords) {
-                            if (pass.equals(password)) {
-                                indexPassword = counter;
-                                if (indexUsername == indexPassword) {
-                                    System.out.println("You are signed in!");
-                                    signedIn = true;
-                                    Student.main(null);
-                                } else {
-                                    System.out.println("Error! Unable to sign in.");
-                                }
-                                break; // break out of for loop after calling main method in Student.java or 
-                                // printing error message
-                            }
-                            counter++;
-                        }
+                    String passwordStored = studentPasswords.get(indexStudentUsername);
+                    if( pass.equals(passwordStored)) {
+                        System.out.println("You are signed in as a student!");
+                        signedIn = true;
+                        Student.main(null);
+                    } else {
+                        System.out.println("Error! Password doesn't match. Unable to sign in.");
                     }
                 }
             } else if (teacherOrStudent == 2) {
                 boolean signedIn;
+                int indexTeacherName;
 
                 validInput = true;
                 usernameExists = false;
@@ -437,14 +425,14 @@ public class User {
                     System.out.println("Enter a username: ");
                     String user = scan.nextLine();
                     if (teacherUsernames != null && teacherUsernames.size() > 0) {
-                        counter = 0;
+                        //counter = 0;
+                        indexTeacherName=0;
                         for (String username : teacherUsernames) {
                             if (username.equals(user)) {
                                 usernameExists = true;
-                                indexUsername = counter;
                                 break;
                             }
-                            counter++;
+                            indexTeacherName++;
                         }
                         if (!usernameExists) {
                             System.out.println("Username doesn't exist. Please try again!");
@@ -461,22 +449,13 @@ public class User {
                 while (!signedIn) {
                     System.out.println("Enter your password: ");
                     String pass = scan.nextLine();
-                    if (teacherPasswords != null && teacherPasswords.size() > 0) {
-                        counter = 0;
-                        for (String password : teacherPasswords) {
-                            if (pass.equals(password)) {
-                                indexPassword = counter;
-                                if (indexUsername == indexPassword) {
-                                    System.out.println("You are signed in!");
-                                    signedIn = true;
-                                    Teacher.main(null);
-                                } else {
-                                    System.out.println("Error! Unable to sign in.");
-                                }
-                                break;
-                            }
-                            counter++;
-                        }
+                    String passwordStored = teacherPasswords.get(indexTeacherName);
+                    if( pass.equals(passwordStored)) {
+                        System.out.println("You are signed in as a teacher!");
+                        signedIn = true;
+                        Teacher.main(null);
+                    } else {
+                        System.out.println("Error! Password doesn't match. Unable to sign in.");
                     }
                 }
             } else {
@@ -516,6 +495,23 @@ public class User {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    private static void readAllFiles() {
+        File studentUserNamesFile = new File("src/StudentUsernames.txt");
+        File studentPasswordsFile = new File("src/StudentUsernames.txt");
+        File teacherUsernamesFile = new File("src/TeacherUsernames.txt");
+        File teacherPasswordsFile = new File("src/TeacherPasswords.txt");
+
+        if( studentUserNamesFile.exists() && studentPasswordsFile.exists() ) {
+            studentUsernames = readFile("src/StudentUsernames.txt");
+            studentPasswords = readFile("src/StudentPasswords.txt");
+        }
+
+        if( teacherUsernamesFile.exists() && teacherPasswordsFile.exists() ) {
+            teacherUsernames = readFile("src/TeacherUsernames.txt");
+            teacherPasswords = readFile("src/TeacherPasswords.txt");
         }
     }
 
