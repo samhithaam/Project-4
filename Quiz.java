@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 /**
  * Quiz.java
+ *
  * @author Ritu Atreyas
  * @version 11/14/2021
  */
@@ -21,7 +22,7 @@ public class Quiz {
     private ArrayList<String> answerChoices;
     private ArrayList<String> correctAnswers;
 
-    public static void main (String [] args) {
+    public static void main(String[] args) {
         // can either load contents of quizzes ArrayList using teacherSubmissions ArrayList
         // ArrayList<String> teacherSubmissions = Teacher.getTeacherSubmissions();
         // quizzes = formatTeacherSubmissions(teacherSubmissions);
@@ -64,11 +65,11 @@ public class Quiz {
             // the index value of the next occurrence of 'y' and 'n' is how we're making sense of teacher input
             // the number of times 'y' or 'n' shows up in the text file = the number of quizzes there are
             // what the user inputs for question about randomization is consistent among every quiz (either 'y' or 'n')
-            ArrayList<Integer> indexOfY_N = new ArrayList<>();
+            ArrayList<Integer> indexOfYN = new ArrayList<>();
             for (int i = 0; i < fileContents.size(); i++) {
                 if (fileContents.get(i).equalsIgnoreCase("y") ||
                         fileContents.get(i).equalsIgnoreCase("n")) {
-                    indexOfY_N.add(i);
+                    indexOfYN.add(i);
                 }
             }
 
@@ -78,19 +79,19 @@ public class Quiz {
             ArrayList<String> correctAnswersLocal = new ArrayList<>();
             int indexValue;
             boolean randomizedLocal;
-            for (int i = 0; i < indexOfY_N.size(); i++) {
-                if ((i + 1) < indexOfY_N.size()) {
+            for (int i = 0; i < indexOfYN.size(); i++) {
+                if ((i + 1) < indexOfYN.size()) {
                     answerChoicesLocal.clear();
                     questionsLocal.clear();
                     correctAnswersLocal.clear();
-                    indexValue = indexOfY_N.get(i);
+                    indexValue = indexOfYN.get(i);
 
                     randomizedLocal = fileContents.get(indexValue).equalsIgnoreCase("y");
 
                     int questionIndex = indexValue + 1;
-                    while (questionIndex < indexOfY_N.get(i + 1)) {
+                    while (questionIndex < indexOfYN.get(i + 1)) {
                         questionsLocal.add(fileContents.get(questionIndex));
-                        if (questionIndex + 7 == indexOfY_N.get(i + 1)) {
+                        if (questionIndex + 7 == indexOfYN.get(i + 1)) {
                             break;
                         } else {
                             questionIndex += 6;
@@ -98,12 +99,12 @@ public class Quiz {
                     }
 
                     int answerChoicesIndex = indexValue + 2;
-                    while ((answerChoicesIndex + 3) < indexOfY_N.get(i + 1)) {
-                           answerChoicesLocal.add(fileContents.get(answerChoicesIndex));
+                    while ((answerChoicesIndex + 3) < indexOfYN.get(i + 1)) {
+                        answerChoicesLocal.add(fileContents.get(answerChoicesIndex));
                         answerChoicesLocal.add(fileContents.get(answerChoicesIndex + 1));
                         answerChoicesLocal.add(fileContents.get(answerChoicesIndex + 2));
                         answerChoicesLocal.add(fileContents.get(answerChoicesIndex + 3));
-                        if (answerChoicesIndex + 6 == indexOfY_N.get(i + 1)) {
+                        if (answerChoicesIndex + 6 == indexOfYN.get(i + 1)) {
                             break;
                         } else {
                             answerChoicesIndex += 6;
@@ -111,9 +112,9 @@ public class Quiz {
                     }
 
                     int correctAnswerIndex = indexValue + 6;
-                    while (correctAnswerIndex < indexOfY_N.get(i + 1)) {
+                    while (correctAnswerIndex < indexOfYN.get(i + 1)) {
                         correctAnswersLocal.add(fileContents.get(correctAnswerIndex));
-                        if (correctAnswerIndex + 2 == indexOfY_N.get(i + 1)) {
+                        if (correctAnswerIndex + 2 == indexOfYN.get(i + 1)) {
                             break;
                         } else {
                             correctAnswerIndex += 6;
@@ -127,7 +128,7 @@ public class Quiz {
             // when i + 1 = indexOfY_N.size(), indexOfY_N.get(i + 1) will result in IndexOutOfBoundsException
             // use fileContents.size() to loop through entire ArrayList as opposed to the next occurrence of 'y' or 'n'
 
-            indexValue = indexOfY_N.get(indexOfY_N.size() - 1);
+            indexValue = indexOfYN.get(indexOfYN.size() - 1);
             randomizedLocal = fileContents.get(indexValue).equalsIgnoreCase("y");
 
             int questionIndex = indexValue + 1;
