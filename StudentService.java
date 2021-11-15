@@ -15,9 +15,9 @@ public class StudentService {
     public static void main(String[] args) {
         username = args[0];
         if (username != null) {
-            System.out.println("Welcome " + username);//if a username does not exist we quit the class
+            System.out.println("Welcome " + username);
         } else {
-            System.out.println("Invalid user");
+            System.out.println("Invalid user");//if a username does not exist it quits the class
             System.exit(0);
         }
         Scanner sc = new Scanner(System.in);
@@ -26,17 +26,18 @@ public class StudentService {
         boolean runTest = true;
         do {
             System.out.println("Choose one of the options below");
-            System.out.println("1) Take a quiz\n2) View Grade\n0) Exit");
+            System.out.println("1) Take a quiz\n2) View Grade");
             choice = sc.nextInt();
 
             ArrayList<Quiz> quizzes = Quiz.getQuizzes();
             if (quizzes == null) {
-                System.out.println("No quizzes available.Come back later!");
+                System.out.println("No quizzes available.Come back later!"); //if no quiz files are created by teacher
                 runTest = false;
             } else {
+                // to take quiz
                 if (choice == 1) {
                     printQuizTitles(); //print quiz choices
-                    System.out.println("Enter the quiz title");
+                    System.out.println("Enter the quiz title"); //quiz title to take quiz from listed choices
                     String quizName = sc.nextLine(); //reads quiz name,
                     try {
                         StudentService.takeQuiz(quizName);// student takes the quiz
@@ -44,9 +45,10 @@ public class StudentService {
                         e.printStackTrace();
                     }
                     quizTaken = true; //if student takes the test
+                    //to view grade
                 } else if (choice == 2) {
                     printQuizTitles();
-                    System.out.println("Enter quiz title: ");
+                    System.out.println("Enter quiz title: "); //quiz title of graded quiz
                     String quizName = sc.nextLine();
 
                     try {
@@ -55,9 +57,6 @@ public class StudentService {
                         e.printStackTrace();
                     }
 
-                } else if (choice == 0) {
-                    System.out.println("Comeback later " + username + "!");
-                    break;
                 } else {
                     System.out.println("Invalid Input!");
                 }
@@ -68,16 +67,16 @@ public class StudentService {
 
                 }
             }
-            }
-            while (runTest) ;
         }
+        while (runTest) ;
+    }
 
 
     public static ArrayList<String> getStudentSubmissions() {
         return studentQuiz;
     }
 
-    //quiz title
+    //accessed if user wants to takes quiz
     public static void takeQuiz(String quizTitle) throws IOException {
         int i = 0;
         boolean found = false;
@@ -100,8 +99,6 @@ public class StudentService {
             System.out.println("Invalid Quiz Title");
         }
 
-
-        // StudentQuiz sq = new StudentQuiz(username, new Quiz(quizTitle, questions), System.currentTimeMillis());
         submitQuiz(quizTitle);
 
         System.out.println("Would you like to take another quiz? Y/N");
@@ -110,7 +107,7 @@ public class StudentService {
             takeQuiz(sc.next());
         }
     }
-
+    // accesses this method when student takes quiz and submits response
     public static void submitQuiz(String quizTitle) throws IOException {
         String fileName = quizTitle + "_" + username;
         BufferedWriter writer = new BufferedWriter(new FileWriter(new File(fileName)));
@@ -122,13 +119,13 @@ public class StudentService {
         }
 
     }
-
+    // generates randomization
     public int getRandomNo(int len) {
         Random random = new Random();
         int questionNo = random.nextInt(len - 1);
         return questionNo;
     }
-
+    //accesses this method if quiz is randomized
     public static void printRandomizedQuiz(Quiz q, Scanner sc) {
         int[] repeat = new int[q.getQuestions().size()];
         for (int i = 0; i < q.getQuestions().size(); i++) {
@@ -152,7 +149,7 @@ public class StudentService {
 
         }
     }
-
+    // accesses this method if quiz is not randomized
     public static void printQuiz(Quiz q, Scanner sc) {
         int pos = 0;
         for (int i = 0; i < q.getQuestions().size(); i++) {
@@ -186,7 +183,7 @@ public class StudentService {
 
         return randomArr;
     }
-
+    // view graded quiz after teacher grades it
     public static void viewGradedQuiz(String quizTitle) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(quizTitle
                 + "_" + username));
@@ -219,7 +216,7 @@ public class StudentService {
         }
         return fileContents;
     }
-
+   // displays all the available quiz titles
     public static void printQuizTitles() {
         if (Quiz.getQuizzes() != null) {
             for (Quiz quiz : Quiz.getQuizzes()) {
@@ -229,4 +226,3 @@ public class StudentService {
         }
     }
 }
-
