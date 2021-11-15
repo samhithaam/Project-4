@@ -7,19 +7,20 @@ import java.text.SimpleDateFormat;
 
 /**
  * Student.java
+ *
  * @author Ritu Atreyas
  * @version 11/14/2021
  */
 
 public class Student {
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm");
+    private static final SimpleDateFormat SDF = new SimpleDateFormat("MM-dd-yyyy HH:mm");
 
     // [question #1, answer to Q1, student answer, question #2, answer to Q2, ...]
     // updated in printQuiz, accessed in viewGradedQuiz()
     private static ArrayList<String> studentSubmissions = new ArrayList<>();
 
-    public static void main (String [] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException {
         updateArrayList();
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
@@ -75,9 +76,10 @@ public class Student {
                     validInput = true;
                     printQuiz(quiz.isRandomized(), quizChoice, scanner);
                     // referenced https://mkyong.com/java/how-to-get-current-timestamps-in-java/
-                    System.out.println(sdf.format(new Timestamp(System.currentTimeMillis())));
+                    System.out.println(SDF.format(new Timestamp(System.currentTimeMillis())));
                 }
-            } if (!validInput) {
+            }
+            if (!validInput) {
                 System.out.println("Invalid input.");
             }
             System.out.println("Would you like to take another quiz? Type 'y' for yes, 'n' for no.");
@@ -111,7 +113,7 @@ public class Student {
          */
 
         // read from file instead of accessing variable directly
-        ArrayList<String> studentSubmissionsLocal= Student.readFile("src/StudentSubmissions.txt");
+        ArrayList<String> studentSubmissionsLocal = Student.readFile("src/StudentSubmissions.txt");
         if (studentSubmissionsLocal == null || studentSubmissionsLocal.size() == 0) {
             System.out.println("There aren't any submissions yet!");
             return;
@@ -136,7 +138,7 @@ public class Student {
         ArrayList<Integer> list = new ArrayList<>();
         int num = 0;
         while (list.size() != length) {
-            num = (int)(Math.random() * end + start);
+            num = (int) (Math.random() * end + start);
             if (list.size() == 0) {
                 list.add(num);
             } else {
@@ -215,7 +217,7 @@ public class Student {
         if (!new File(fileName).exists()) {
             return null;
         }
-        
+
         try (BufferedReader bfr = new BufferedReader(new FileReader(fileName))) {
             ArrayList<String> fileContents = new ArrayList<>();
             String line = new String("");
