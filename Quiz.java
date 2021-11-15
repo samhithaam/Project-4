@@ -11,8 +11,9 @@ public class Quiz {
 
     // quizzes ArrayList stores contents of teacherSubmissions in a more accessible format
     // each element is a Quiz object and each Quiz object stores the quizName, whether or not that quiz is randomized,
-    // an ArrayList of all the questions, an ArrayList of all the answer choices, and an ArrayList of all the correct answers
-    private static ArrayList<Quiz> quizzes = readFile("src/quizList.txt");
+    // an ArrayList of all the questions, an ArrayList of all the answer choices,
+    // and an ArrayList of all the correct answers
+    private static ArrayList<Quiz> quizzes = new ArrayList<>();
     // non static field variables, initialized in default constructor
     private String quizName;
     private boolean randomized;
@@ -24,7 +25,7 @@ public class Quiz {
         // can either load contents of quizzes ArrayList using teacherSubmissions ArrayList
         // ArrayList<String> teacherSubmissions = Teacher.getTeacherSubmissions();
         // quizzes = formatTeacherSubmissions(teacherSubmissions);
-
+        updateArrayList();
         // or can load contents of quizzes ArrayList using quizList text file
         if (quizzes == null || quizzes.size() == 0) { // nothing in the text file
             System.out.println("Error reading from file.");
@@ -60,9 +61,13 @@ public class Quiz {
                 return null;
             }
 
+            // the index value of the next occurrence of 'y' and 'n' is how we're making sense of teacher input
+            // the number of times 'y' or 'n' shows up in the text file = the number of quizzes there are
+            // what the user inputs for question about randomization is consistent among every quiz (either 'y' or 'n')
             ArrayList<Integer> indexOfY_N = new ArrayList<>();
             for (int i = 0; i < fileContents.size(); i++) {
-                if (fileContents.get(i).equalsIgnoreCase("y") || fileContents.get(i).equalsIgnoreCase("n")) {
+                if (fileContents.get(i).equalsIgnoreCase("y") ||
+                        fileContents.get(i).equalsIgnoreCase("n")) {
                     indexOfY_N.add(i);
                 }
             }
@@ -114,9 +119,13 @@ public class Quiz {
                             correctAnswerIndex += 6;
                         }
                     }
-                    quizzesLocal.add(new Quiz(fileContents.get(indexValue - 1), randomizedLocal, questionsLocal, answerChoicesLocal, correctAnswersLocal));
+                    quizzesLocal.add(new Quiz(fileContents.get(indexValue - 1), randomizedLocal,
+                            questionsLocal, answerChoicesLocal, correctAnswersLocal));
                 }
             }
+            // following lines of code are to handle when i + 1 = indexOfY_N.size()
+            // when i + 1 = indexOfY_N.size(), indexOfY_N.get(i + 1) will result in IndexOutOfBoundsException
+            // use fileContents.size() to loop through entire ArrayList as opposed to the next occurrence of 'y' or 'n'
 
             indexValue = indexOfY_N.get(indexOfY_N.size() - 1);
             randomizedLocal = fileContents.get(indexValue).equalsIgnoreCase("y");
@@ -142,10 +151,13 @@ public class Quiz {
                 correctAnswerIndex += 6;
             }
 
-            quizzesLocal.add(new Quiz(fileContents.get(indexValue - 1), randomizedLocal, questionsLocal, answerChoicesLocal, correctAnswersLocal));
+            quizzesLocal.add(new Quiz(fileContents.get(indexValue - 1), randomizedLocal,
+                    questionsLocal, answerChoicesLocal, correctAnswersLocal));
+
+            // update quizOutput.txt with contents of quizzesLocal
             try (PrintWriter pw = new PrintWriter(new FileWriter("src/quizOutput.txt"))) {
                 for (Quiz quiz : quizzesLocal) {
-                    pw.println(quiz.toString());
+                    pw.println(quiz.toString()); // call overridden toString method
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -204,6 +216,14 @@ public class Quiz {
 
     public void setCorrectAnswers(ArrayList<String> correctAnswers) {
         this.correctAnswers = correctAnswers;
+    }
+
+
+    public static void updateArrayList() {
+        File quizListFile = new File("src/quizList.txt");
+        if (quizListFile.exists()) {
+            quizzes = readFile("src/quizList.txt");
+        }
     }
 
     @Override
